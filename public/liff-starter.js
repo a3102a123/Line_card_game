@@ -3,14 +3,15 @@ let PROFILE = null;
 
 /*Class definition*/
 class Room{
-    constructor(id,category,cg_remain_num){
+    constructor(id,category,cg_remain_num,game_name){
         this.pool = new Pool(category,cg_remain_num);
         this.id = id;
         this.category = Array.from(category);
         this.cg_remain_num = Array.from(cg_remain_num);
+        this.game_name = game_name;
     }
     reset(){
-        this.pool = new Pool(category,cg_remain_num);
+        this.pool = new Pool(this.category,this.cg_remain_num);
     }
     cg_insert(new_cg,new_re_num){
         this.category.push(new_cg);
@@ -66,10 +67,12 @@ var room_arr = new Map();
 var player_arr = new Map();
 var player_name_arr = [];
 var current_id = 0;
-var category = ["wolfman","Villager","Prophet"];
+var category = ["Wolfman","Villager","Prophet"];
 var cg_remain_num = [1,3,1];
 var category2 = ["Arthur","Percival","Assassin","Loyal Servant"];
 var cg_remain_num2 = [1,1,2,2];
+var category3 = [];
+var cg_remain_num3 = [];
 
 window.onload = function () {
     const useNodeJS = true;   // if you are not using a node server, set this value to false
@@ -235,6 +238,20 @@ function registerButtonHandlers() {
     document.getElementById('UserId').addEventListener('keyup', function (event) {	
         document.getElementById('UserId').textContent = event.target.value;	
     });
+    /*update CustomCategory name context*/
+    document.getElementById('CustomCategory').addEventListener('keyup', function (event) {	
+        document.getElementById('CustomCategory').textContent = event.target.value;	
+    });
+
+    /*Show player name */
+    function showName(player_arr){
+        temp = "Players In Room : ";
+        output = temp.concat(player_arr);
+        cls_e = document.getElementById('PlayerName');
+        cls_e.innerHTML = output;
+        return;
+    };
+
     /*add new player */
     document.getElementById('AddBtn').addEventListener('click', function (event) {	
         const username = document.getElementById('UserId').textContent || ' ';
@@ -250,14 +267,18 @@ function registerButtonHandlers() {
         user.set_player(current_id-1);
         player_arr[username] = user;
         player_name_arr.push(username);
+
+        showName(player_name_arr);
     });
 
     /*drawing room number */
     function drawRoomnum(username){
         var user = WhoAmI(username);
         var roomNum = String(user.room_id);
+        var room = room_arr[user.room_id];
         temp = "Room ID : ";
         roomNum = temp.concat(roomNum);
+        roomNum = roomNum.concat(" ",room.game_name);
         cls_e = document.getElementById('UserRoomNum');
         cls_e.innerHTML = roomNum;
         return;
@@ -267,6 +288,11 @@ function registerButtonHandlers() {
         for(var i = 0; i < player_name_arr.length ; i++){
             var user = WhoAmI(player_name_arr[i]);
             room = room_arr[id];
+            console.log(room);
+            if (room == undefined){
+                alert("Please Add the Room !");
+                return;
+            }
             if(room.pool.num <= 0 && user.identity != "host"){
                 alert("The room is full!");
                 return;
@@ -306,6 +332,32 @@ function registerButtonHandlers() {
         }
         cls_e.innerHTML = str;
     }
+    /*print all undefined */
+    function printAllud(){
+        cls_e = document.getElementById('UserClass');
+        str = "";
+        for(var i = 0; i < player_name_arr.length ; i++){
+            var user = WhoAmI(player_name_arr[i]);
+            var playerclass = "Undefined";
+            var temp = player_name_arr[i].concat(" : ");
+            temp = temp.concat(playerclass);
+            temp = temp.concat("</br>");
+            str = str.concat(temp);
+        }
+        cls_e.innerHTML = str;
+    }
+    /*print customize category */
+    function printCustomCategory(){
+        cls_e = document.getElementById('Category');
+        str = "";
+        for(var i = 0; i < category3.length ; i++){
+            var temp = category3[i].concat(" : ");
+            temp = temp.concat(String(cg_remain_num3[i]));
+            temp = temp.concat("</br>");
+            str = str.concat(temp);
+        }
+        cls_e.innerHTML = str;
+    }
     /*user enter play room event trigger*/
     document.getElementById('AttendBtn').addEventListener('click', function (event) {
         const id = document.getElementById('RoomId').textContent || ' ';
@@ -321,7 +373,7 @@ function registerButtonHandlers() {
     /*create new room */
     document.getElementById('NewRoom').addEventListener('click', function (event) {
         var user = WhoAmI(player_name_arr[0]);
-        var new_room = new Room(current_id,category,cg_remain_num);
+        var new_room = new Room(current_id,category,cg_remain_num,"Werewolf");
         room_arr[current_id] = new_room;
         room = room_arr[current_id];
         user.main_pool = room.pool;
@@ -331,7 +383,21 @@ function registerButtonHandlers() {
     });
     document.getElementById('NewRoom2').addEventListener('click', function (event) {
         var user = WhoAmI(player_name_arr[0]);
-        var new_room = new Room(current_id,category2,cg_remain_num2);
+        var new_room = new Room(current_id,category2,cg_remain_num2,"Avalon");
+        room_arr[current_id] = new_room;
+        room = room_arr[current_id];
+        user.main_pool = room.pool;
+        user.set_host(current_id);
+        current_id += 1;
+        drawRoomnum(player_name_arr[0]);
+    });
+    document.getElementById('NewRoom3').addEventListener('click', function (event) {
+        if(category3.length == 0){
+            alert("You don't add any element of game!")
+            return;
+        }
+        var user = WhoAmI(player_name_arr[0]);
+        var new_room = new Room(current_id,category3,cg_remain_num3,"Custom");
         room_arr[current_id] = new_room;
         room = room_arr[current_id];
         user.main_pool = room.pool;
@@ -344,30 +410,49 @@ function registerButtonHandlers() {
         var room_id = get_cur_room_id();
         var room = room_arr[room_id];
         room.reset(); 
-        drawAllclass();
+        printAllud();
     });
     /*drawing player class event trigger */
     document.getElementById('drawCard').addEventListener('click', function (event) {
         attend_room(get_cur_room_id());
         drawAllclass();
     });
+    /*customize game */
+    document.getElementById('AddCategoryBtn').addEventListener('click', function (event) {
+        var elem_cg = document.getElementById('CustomCategory');
+        var elem_cg_n = document.getElementById('customCategoryNum');
+        if(elem_cg_n.value == "" || elem_cg.textContent == ""){
+            alert("Data Missing!");
+            return;
+        }
+        category3.push(elem_cg.textContent);
+        cg_remain_num3.push(parseInt(elem_cg_n.value));
+        printCustomCategory();
+    });
+    /*clear customize game */
+    document.getElementById('ClearCategoryBtn').addEventListener('click', function (event) {
+        category3.length = 0;
+        cg_remain_num3.length = 0;
+        printCustomCategory();
+    });
 
     /* Get */
     document.getElementById('shareMeme').addEventListener('click', function (event) {
         if (!liff.isLoggedIn()) alert('please login in LINE');
 
-        const imageUrl = document.getElementById('memeImage').src;
-        const topText = document.getElementById('memeTopCaption').textContent || ' ';
-        const bottomText = document.getElementById('memeBottomCaption').textContent || ' ';
+        // const imageUrl = document.getElementById('memeImage').src;
+        // const topText = document.getElementById('memeTopCaption').textContent || ' ';
+        // const bottomText = document.getElementById('memeBottomCaption').textContent || ' ';
         const url = window.location.href;
         liff.shareTargetPicker([{
             'type': 'flex',
-            'altText': topText + ' ' + bottomText,
+            'altText': " ",
             'contents': {
                 "type": "bubble",
                 "hero": {
                   "type": "image",
-                  "url": imageUrl,
+                  // "url": imageUrl,
+                  "url": "https://www.google.com",
                   "size": "full",
                   "aspectRatio": "20:13",
                   "aspectMode": "cover",
@@ -382,7 +467,7 @@ function registerButtonHandlers() {
                   "contents": [
                     {
                       "type": "text",
-                      "text": topText,
+                      "text": "topText",
                       "weight": "bold",
                       "size": "xl"
                     }

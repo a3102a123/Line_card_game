@@ -22,6 +22,33 @@
     flex: 1;
 }
 
+#PlayerName {
+    font-size: 1em;
+    text-align: center;
+}
+
+#UserClass {
+    font-size: 1em;
+    text-align: center;
+}
+
+#UserRoomNum {
+    font-size: 1em;
+    text-align: center;
+}
+
+.roomDetailTitle {
+    font-size: 1.75em;
+    text-align: center;
+    font-weight: bold;
+}
+
+.cardResult {
+    font-size: 1.75em;
+    text-align: center;
+    font-weight: bold;
+}
+
 .meme {
     position: relative;
     width: 300px;
