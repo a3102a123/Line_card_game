@@ -6,8 +6,8 @@ class Room{
     constructor(id,category,cg_remain_num){
         this.pool = new Pool(category,cg_remain_num);
         this.id = id;
-        this.category = category;
-        this.cg_remain_num = cg_remain_num;
+        this.category = Array.from(category);
+        this.cg_remain_num = Array.from(cg_remain_num);
     }
     reset(){
         this.pool = new Pool(category,cg_remain_num);
@@ -25,8 +25,8 @@ class Room{
 
 class Pool{
     constructor(category, cg_remain_num){
-        this.category = category;
-        this.cg_remain_num = cg_remain_num;
+        this.category = Array.from(category);
+        this.cg_remain_num = Array.from(cg_remain_num);
         this.num = Pool.total_pool_num(cg_remain_num);
         this.map = new Map();
     }
@@ -40,11 +40,11 @@ class Pool{
 }
 
 class Player{
-    constructor(userid){
+    constructor(username){
         this.identity = undefined;
         this.room_id = undefined;
         this.main_pool = undefined;
-        this.userid = userid;
+        this.username = username;
     }
     is_room_exists(){
         if(this.room_id == undefined)
@@ -213,29 +213,39 @@ function registerButtonHandlers() {
     function getRandomInt(max) {
         return Math.floor(Math.random() * Math.floor(max));
     }
-    function WhoAmI(){
-        userid = PROFILE.userId;
-        user = player_arr[userid];
+    function WhoAmI(username){
+        user = player_arr[username];
         return user;
     }
     /*update room id context*/
     document.getElementById('RoomId').addEventListener('keyup', function (event) {	
         document.getElementById('RoomId').textContent = event.target.value;	
     });
+    /*update user name context*/
+    document.getElementById('UserId').addEventListener('keyup', function (event) {	
+        document.getElementById('UserId').textContent = event.target.value;	
+    });
+    /*add new player */
+    document.getElementById('AddBtn').addEventListener('click', function (event) {	
+        const username = document.getElementById('UserId').textContent || ' ';
+        if(username == ' '){
+            alert("Please input username!");
+            return;
+        }
+        var user = new Player(username);
+        player_arr[username] = user;
+    });
     /*user enter play room */
     document.getElementById('AttendBtn').addEventListener('click', function (event) {
         const id = document.getElementById('RoomId').textContent || ' ';
+        user = WhoAmI(PROFILE.userId);
+        room = room_arr[id];
         if (id == ' '){
             alert("Please input room ID!");
             return;
         }
-        if(room.pool.num <= 0){
+        if(room.pool.num <= 0 && user.identity != "host"){
             alert("The room is full!");
-            return;
-        }
-        user = WhoAmI();
-        if(user.room_id != undefined){
-            alert("You already have a play room!");
             return;
         }
         user.set_player(id);
@@ -243,12 +253,8 @@ function registerButtonHandlers() {
     });
     /*create new room */
     document.getElementById('NewRoom').addEventListener('click', function (event) {
-        var user = WhoAmI();
+        var user = WhoAmI(PROFILE.userId);
         var new_room = new Room(current_id,category,cg_remain_num);
-        if(user.room_id != undefined){
-            alert("You already have a play room!");
-            return;
-        }
         room_arr[current_id] = new_room;
         room = room_arr[current_id];
         user.main_pool = room.pool;
@@ -256,18 +262,22 @@ function registerButtonHandlers() {
         current_id += 1;
     });
     /*drawing player class */
-    document.getElementById('drawCard').addEventListener('click', function (event) {
-        var user = WhoAmI();
-        var playerclass = user.main_pool.map[user.userid];
+    function drawclass(username){
+        var user = WhoAmI(username);
+        var playerclass = user.main_pool.map[user.username];
         while(playerclass == undefined && user.main_pool.num >= 0){
             i = getRandomInt(user.main_pool.category.length)
             if(user.main_pool.cg_remain_num[i] != 0){
                 user.main_pool.cg_remain_num[i] -= 1;
                 user.main_pool.num -= 1;
                 playerclass = user.main_pool.category[i];
-                user.main_pool.map[userid] = playerclass;
+                user.main_pool.map[user.username] = playerclass;
             }
         }
+        return playerclass;
+    }
+    document.getElementById('drawCard').addEventListener('click', function (event) {
+        var playerclass = drawclass(PROFILE.userId);
         cls_e = document.getElementById('UserClass');
         cls_e.innerHTML = playerclass;
     });
