@@ -66,7 +66,7 @@ var room_arr = new Map();
 var player_arr = new Map();
 var player_name_arr = [];
 var current_id = 0;
-var category = ["wolfman","Villager","Prophet"];
+var category = ["Wolfman","Villager","Prophet"];
 var cg_remain_num = [1,3,1];
 
 window.onload = function () {
@@ -266,13 +266,20 @@ function registerButtonHandlers() {
     /*user enter play room */
     document.getElementById('AttendBtn').addEventListener('click', function (event) {
         const id = document.getElementById('RoomId').textContent || ' ';
+        console.log(id);
         if (id == ' '){
             alert("Please input room ID!");
             return;
         }
+        
         for(var i = 0; i < player_name_arr.length ; i++){
             var user = WhoAmI(player_name_arr[i]);
             room = room_arr[id];
+            console.log(room);
+            if (room == undefined){
+                alert("Please Add the Room !");
+                return;
+            }
             if(room.pool.num <= 0 && user.identity != "host"){
                 alert("The room is full!");
                 return;
@@ -332,18 +339,19 @@ function registerButtonHandlers() {
     document.getElementById('shareMeme').addEventListener('click', function (event) {
         if (!liff.isLoggedIn()) alert('please login in LINE');
 
-        const imageUrl = document.getElementById('memeImage').src;
-        const topText = document.getElementById('memeTopCaption').textContent || ' ';
-        const bottomText = document.getElementById('memeBottomCaption').textContent || ' ';
+        // const imageUrl = document.getElementById('memeImage').src;
+        // const topText = document.getElementById('memeTopCaption').textContent || ' ';
+        // const bottomText = document.getElementById('memeBottomCaption').textContent || ' ';
         const url = window.location.href;
         liff.shareTargetPicker([{
             'type': 'flex',
-            'altText': topText + ' ' + bottomText,
+            'altText': " ",
             'contents': {
                 "type": "bubble",
                 "hero": {
                   "type": "image",
-                  "url": imageUrl,
+                  // "url": imageUrl,
+                  "url": "https://www.google.com",
                   "size": "full",
                   "aspectRatio": "20:13",
                   "aspectMode": "cover",
@@ -358,7 +366,7 @@ function registerButtonHandlers() {
                   "contents": [
                     {
                       "type": "text",
-                      "text": topText,
+                      "text": "topText",
                       "weight": "bold",
                       "size": "xl"
                     }
