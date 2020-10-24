@@ -338,6 +338,12 @@ function registerButtonHandlers() {
         });
     });
 }
+function dis_bug_mes(){
+    console.log("player array\n",player_arr);
+    console.log("room array\n",room_arr);
+    console.log("current",current_id);
+}
+window.setInterval(dis_bug_mes,2000);
 
 /**
 * Toggle specified element
