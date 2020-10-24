@@ -22,6 +22,10 @@
     flex: 1;
 }
 
+.btn {
+    margin: 5px 5px 5px 0px;
+}
+
 #PlayerName {
     font-size: 1em;
     text-align: center;
@@ -47,6 +51,21 @@
     font-size: 1.75em;
     text-align: center;
     font-weight: bold;
+}
+
+.customcategory {
+    font-size: 1.75em;
+    text-align: center;
+    font-weight: bold;
+}
+
+.typesTitle {
+    margin-bottom: 10px;
+}
+
+.actionsTitle {
+    margin-top: 5px;
+    margin-bottom: 10px;
 }
 
 .meme {
@@ -89,8 +108,19 @@
 
 @media (max-width:600px){
     .loginBlock {
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-}
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+    }
+    .infoBlock {
+        width: 85%;
+        margin-left: auto;
+        margin-right: auto;
+        display: flex;
+        flex-direction: column;
+    }
+    .btn {
+        margin-top: 5px;
+        margin-bottom: 5px;
+    }
 }

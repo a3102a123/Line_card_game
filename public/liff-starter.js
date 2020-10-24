@@ -264,7 +264,7 @@ function registerButtonHandlers() {
         if(room != undefined){
             user.main_pool = room.pool;
         }
-        user.set_player(current_id-1);
+        user.set_player(-1);
         player_arr[username] = user;
         player_name_arr.push(username);
 
@@ -295,6 +295,7 @@ function registerButtonHandlers() {
             var num = parseInt(room.cg_remain_num[j]);
             totalnum += num;
         }
+        // alert(totalnum);
         for(var i = 0; i < player_name_arr.length ; i++){
             var user = WhoAmI(player_name_arr[i]);
             if(i >= totalnum)
