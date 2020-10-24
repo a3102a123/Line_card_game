@@ -246,21 +246,12 @@ function registerButtonHandlers() {
     /*drawing room number */
     function drawRoomnum(username){
         var user = WhoAmI(username);
-        // console.log(is_room_exists());
-        // var roomNum = user.main_pool.map[user.room_id];
-
-        // while(roomNum == undefined && user.main_pool.num >= 0){
-        //     i = getRandomInt(user.main_pool.category.length)
-        //     if(user.main_pool.cg_remain_num[i] != 0){
-        //         user.main_pool.cg_remain_num[i] -= 1;
-        //         user.main_pool.num -= 1;
-        //         playerclass = user.main_pool.category[i];
-        //         user.main_pool.map[user.username] = playerclass;
-        //     }
-        // }
-        // return playerclass;
-        console.log(room_arr[user.room_id]);
-        return user.room_id;
+        var roomNum = String(user.room_id);
+        temp = "Room ID : ";
+        roomNum = temp.concat(roomNum);
+        cls_e = document.getElementById('UserRoomNum');
+        cls_e.innerHTML = roomNum;
+        return;
     };
 
     /*user enter play room */
@@ -284,11 +275,7 @@ function registerButtonHandlers() {
             user.main_pool = room.pool;
         }
         // print roomNum
-        var roomNum = drawRoomnum(player_name_arr[0]);
-        alert(roomNum);
-        cls_e = document.getElementById('UserRoomNum');
-        
-        cls_e.innerHTML = String(roomNum);
+        drawRoomnum(player_name_arr[0]);
     });
     /*create new room */
     document.getElementById('NewRoom').addEventListener('click', function (event) {
@@ -299,6 +286,7 @@ function registerButtonHandlers() {
         user.main_pool = room.pool;
         user.set_host(current_id);
         current_id += 1;
+        drawRoomnum(player_name_arr[0]);
     });
     /*drawing player class */
     function drawclass(user){
