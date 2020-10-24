@@ -228,6 +228,16 @@ function registerButtonHandlers() {
     document.getElementById('UserId').addEventListener('keyup', function (event) {	
         document.getElementById('UserId').textContent = event.target.value;	
     });
+
+    /*Show player name */
+    function showName(player_arr){
+        temp = "Players In Room : ";
+        output = temp.concat(player_arr);
+        cls_e = document.getElementById('PlayerName');
+        cls_e.innerHTML = output;
+        return;
+    };
+
     /*add new player */
     document.getElementById('AddBtn').addEventListener('click', function (event) {	
         const username = document.getElementById('UserId').textContent || ' ';
@@ -241,6 +251,8 @@ function registerButtonHandlers() {
         user.main_pool = room.pool;
         player_arr[username] = user;
         player_name_arr.push(username);
+
+        showName(player_name_arr);
     });
 
     /*drawing room number */
