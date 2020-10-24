@@ -140,7 +140,7 @@ function registerButtonHandlers() {
         return Math.floor(Math.random() * Math.floor(max));
     }
 
-    class room{
+    class Room{
         constructor(id,category,cg_remain_num){
             this.pool = new Pool(category,cg_remain_num);
             this.id = id;
@@ -177,9 +177,34 @@ function registerButtonHandlers() {
         }
     }
     var room_arr = new Map();
+    var current_id = 0;
     var category = ["wolfman","Villager","Prophet"];
     var cg_remain_num = [1,3,1];
-    main_pool = new Pool(category,cg_remain_num);
+    var main_pool;
+
+    document.getElementById('RoomId').addEventListener('keyup', function (event) {	
+        document.getElementById('RoomId').textContent = event.target.value;	
+    });
+    document.getElementById('AttendBtn').addEventListener('click', function (event) {
+        const id = document.getElementById('RoomId').textContent || ' ';
+        if (id == ' '){
+            alert("Please input room ID!");
+            return;
+        }
+        var room = room_arr[id];
+        if (room == undefined){
+            alert("The room doesn't exist!");
+            return;
+        }
+        main_pool = room.pool;
+    });
+    document.getElementById('NewRoom').addEventListener('click', function (event) {
+        var new_room = new Room(current_id,category,cg_remain_num);
+        room_arr[current_id] = new_room;
+        room = room_arr[current_id];
+        current_id += 1;
+        main_pool = room.pool;
+    });
     document.getElementById('drawCard').addEventListener('click', function (event) {
         var userid = PROFILE.userId;
         var playerclass = main_pool.map[userid];
