@@ -155,10 +155,10 @@ function displayLiffData() {
         .then((result) => {
             PROFILE = result;
             loginInit();
-            document.getElementById('profileName').textContent = 'Hi, ' + result.displayName;
+            // document.getElementById('profileName').textContent = 'Hi, ' + result.displayName;
         })
-    document.getElementById('isInClient').textContent = liff.isInClient();
-    document.getElementById('isLoggedIn').textContent = liff.isLoggedIn();
+    // document.getElementById('isInClient').textContent = liff.isInClient();
+    // document.getElementById('isLoggedIn').textContent = liff.isLoggedIn();
 }
 
 /**
