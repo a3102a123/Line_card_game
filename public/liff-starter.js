@@ -143,7 +143,7 @@ function initializeApp() {
         document.getElementById('liffLoginButton').disabled = true;
     } else {
         document.getElementById('liffLogoutButton').disabled = true;
-        document.getElementById('shareMeTargetPicker').disabled = true;
+        //document.getElementById('shareMeTargetPicker').disabled = true;
     }
 }
 
@@ -170,7 +170,7 @@ function displayIsInClientInfo() {
         document.getElementById('liffLogoutButton').classList.toggle('hidden');
         document.getElementById('isInClient').textContent = 'You are opening the app in the in-app browser of LINE.';
     } else {
-        document.getElementById('shareMeTargetPicker').classList.toggle('hidden');
+        //document.getElementById('shareMeTargetPicker').classList.toggle('hidden');
     }
 }
 
@@ -186,22 +186,22 @@ function loginInit(){
 * Register event handlers for the buttons displayed in the app
 */
 function registerButtonHandlers() {
-    document.getElementById('shareMeTargetPicker').addEventListener('click', function () {
-        if (liff.isApiAvailable('shareTargetPicker')) {
-            liff.shareTargetPicker([{
-                'type': 'text',
-                'text': 'Hello, I am ' + PROFILE.displayName
-            }, {
-                'type': 'image',
-                'originalContentUrl': PROFILE.pictureUrl,
-                'previewImageUrl': PROFILE.pictureUrl
-            }]).then(function (res) {
-                if (res) alert('Message sent!');
-            }).catch(function (res) {
-                console.error(res);
-            });
-        }
-    });
+    // document.getElementById('shareMeTargetPicker').addEventListener('click', function () {
+    //     if (liff.isApiAvailable('shareTargetPicker')) {
+    //         liff.shareTargetPicker([{
+    //             'type': 'text',
+    //             'text': 'Hello, I am ' + PROFILE.displayName
+    //         }, {
+    //             'type': 'image',
+    //             'originalContentUrl': PROFILE.pictureUrl,
+    //             'previewImageUrl': PROFILE.pictureUrl
+    //         }]).then(function (res) {
+    //             if (res) alert('Message sent!');
+    //         }).catch(function (res) {
+    //             console.error(res);
+    //         });
+    //     }
+    // });
 
     // login call, only when external browser is used
     document.getElementById('liffLoginButton').addEventListener('click', function () {

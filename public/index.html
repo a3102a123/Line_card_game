@@ -33,14 +33,14 @@
                                 <div class="loginBlock">
                                     <button id="liffLoginButton" class="btn btn-success">LINE Login</button>
                                     <button id="liffLogoutButton" class="btn">LINE Logout</button>
-                                    <button id="shareMeTargetPicker" class="btn btn-primary">Share me!</button>
+                                    <!-- <button id="shareMeTargetPicker" class="btn btn-primary">Share me!</button> -->
                                 </div>
 
                                 <div class="tool infoBlock">
                                     <div class="leftBlock">
-                                        <h3>Your Game Setting : </h3>
+                                        <h3>Build A Game Room : </h3>
                                         <form role="form">
-                                            <div class="form-group">
+                                            <!-- <div class="form-group">
                                                 <label>Room ID</label>
                                                 <input id="RoomId" type="text" class="form-control">
                                                 <div class="input-group-append">
@@ -53,9 +53,9 @@
                                                 <div class="input-group-append">
                                                     <button id="AddBtn" class="btn btn-outline-secondary" type="button">Add</button>
                                                 </div>
-                                            </div>
+                                            </div> -->
                                             <div class="form-group">
-                                                <label>Custom Game</label>
+                                                <label>Custom Game Category Settings</label>
                                                 <input id="CustomCategory" type="text" class="form-control" placeholder="Category Name">
                                                 <input id="customCategoryNum" type="number" class="form-control" placeholder="0">
                                                 <div class="input-group-append">
@@ -63,10 +63,27 @@
                                                     <button id="ClearCategoryBtn" class="btn btn-outline-secondary" type="button">Clear ALL</button>
                                                 </div>
                                             </div>
-                                            <div class="typesTitle">Game Types</div>
+                                            <div class="typesTitle">Choose the Game Types</div>
                                             <button type="button" id="NewRoom" class="btn btn-primary">New Werewolf</button>
                                             <button type="button" id="NewRoom2" class="btn btn-primary">New Avalon</button>
                                             <button type="button" id="NewRoom3" class="btn btn-primary">New Custom Game</button>
+                                            <hr>
+                                            <h3>Join / Invite Others : </h3>
+                                            <div class="form-group">
+                                                <label>Room ID</label>
+                                                <input id="RoomId" type="text" class="form-control">
+                                                <div class="input-group-append">
+                                                    <button id="AttendBtn" class="btn btn-outline-secondary" type="button">Attend</button>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Add other players</label>
+                                                <input id="UserId" type="text" class="form-control">
+                                                <div class="input-group-append">
+                                                    <button id="AddBtn" class="btn btn-outline-secondary" type="button">Add</button>
+                                                </div>
+                                            </div>
+
                                             <div class="actionsTitle">Actions</div>
                                             <button type="button" id="drawCard" class="btn btn-primary">Draw Cards</button>
                                             <button type="button" id="ResetBtn" class="btn btn-primary">Reset Cards</button>
@@ -75,17 +92,20 @@
                                     </div>
                                     <div class="rightBlock">
                                         <div class="roomDetailTitle">Room Info Details:</div>
+                                        <hr>
                                         <div>
                                             <p id="UserRoomNum"></p>
                                         </div>
                                         <div>
                                             <p id="PlayerName"></p>
                                         </div>
-                                        <div class="cardResult">Card results:</div>
+                                        <div class="cardResult">Card Results:</div>
+                                        <hr>
                                         <div>
                                             <p id="UserClass"></p>
                                         </div>
-                                        <div class="customcategory">Customize category results:</div>
+                                        <div class="customcategory">Customize Category Results:</div>
+                                        <hr>
                                         <div>
                                             <p id="Category"></p>
                                         </div>
