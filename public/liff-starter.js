@@ -103,7 +103,7 @@ function initializeLiffOrDie(myLiffId) {
     if (myLiffId) {
         initializeLiff(myLiffId);
     } else {
-        console.error('please set your liff Id in application!');
+        console.error('please set your liff Id in application!')
     }
 }
 
@@ -121,7 +121,7 @@ function initializeLiff(myLiffId) {
             initializeApp();
         })
         .catch((err) => {
-            console.log(err);
+            console.log(err)
         });
 }
 
@@ -149,7 +149,6 @@ function displayLiffData() {
         .then((result) => {
             PROFILE = result;
             document.getElementById('profileName').textContent = 'Hi, ' + result.displayName;
-            loginInit();
         })
     document.getElementById('isInClient').textContent = liff.isInClient();
     document.getElementById('isLoggedIn').textContent = liff.isLoggedIn();
@@ -229,10 +228,12 @@ function registerButtonHandlers() {
             alert("Please input room ID!");
             return;
         }
-        var room = room_arr[id];
-        if (room == undefined){
-            alert("The room doesn't exist!");
-            return;
+        static total_pool_num(cg_remain_num){
+            var num = 0;
+            for(var i = 0 ; i < cg_remain_num.length ; i++){
+                num += cg_remain_num[i];
+            }
+            return num;
         }
         if(room.pool.num <= 0){
             alert("The room is full!");
@@ -280,6 +281,10 @@ function registerButtonHandlers() {
     document.getElementById('shareMeme').addEventListener('click', function (event) {
         if (!liff.isLoggedIn()) alert('please login in LINE');
 
+        const imageUrl = document.getElementById('memeImage').src;
+        const topText = document.getElementById('memeTopCaption').textContent || ' ';
+        const bottomText = document.getElementById('memeBottomCaption').textContent || ' ';
+        const url = window.location.href;
         liff.shareTargetPicker([{
             'type': 'flex',
             'altText': topText + ' ' + bottomText,
