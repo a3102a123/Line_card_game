@@ -68,6 +68,8 @@ var player_name_arr = [];
 var current_id = 0;
 var category = ["wolfman","Villager","Prophet"];
 var cg_remain_num = [1,3,1];
+var category2 = ["Arthur","Percival","Assassin","Loyal Servant"];
+var cg_remain_num2 = [1,1,2,2];
 
 window.onload = function () {
     const useNodeJS = true;   // if you are not using a node server, set this value to false
@@ -220,6 +222,11 @@ function registerButtonHandlers() {
         user = player_arr[username];
         return user;
     }
+    function get_cur_room_id(){
+        username = player_name_arr[0];
+        user = player_arr[username];
+        return user.room_id;
+    }
     /*update room id context*/
     document.getElementById('RoomId').addEventListener('keyup', function (event) {	
         document.getElementById('RoomId').textContent = event.target.value;	
@@ -237,8 +244,10 @@ function registerButtonHandlers() {
         }
         var user = new Player(username);
         room = room_arr[current_id-1];
+        if(room != undefined){
+            user.main_pool = room.pool;
+        }
         user.set_player(current_id-1);
-        user.main_pool = room.pool;
         player_arr[username] = user;
         player_name_arr.push(username);
     });
@@ -253,14 +262,8 @@ function registerButtonHandlers() {
         cls_e.innerHTML = roomNum;
         return;
     };
-
     /*user enter play room */
-    document.getElementById('AttendBtn').addEventListener('click', function (event) {
-        const id = document.getElementById('RoomId').textContent || ' ';
-        if (id == ' '){
-            alert("Please input room ID!");
-            return;
-        }
+    function attend_room(id){
         for(var i = 0; i < player_name_arr.length ; i++){
             var user = WhoAmI(player_name_arr[i]);
             room = room_arr[id];
@@ -274,6 +277,44 @@ function registerButtonHandlers() {
                 user.set_player(id);
             user.main_pool = room.pool;
         }
+    }
+    /*drawing a player class */
+    function drawclass(user){
+        var playerclass = user.main_pool.map[user.username];
+        while(playerclass == undefined && user.main_pool.num > 0){
+            i = getRandomInt(user.main_pool.category.length)
+            if(user.main_pool.cg_remain_num[i] != 0){
+                user.main_pool.cg_remain_num[i] -= 1;
+                user.main_pool.num -= 1;
+                playerclass = user.main_pool.category[i];
+                user.main_pool.map[user.username] = playerclass;
+            }
+        }
+        return playerclass;
+    }
+    /*drawing all player class and print*/
+    function drawAllclass(){
+        cls_e = document.getElementById('UserClass');
+        str = "";
+        for(var i = 0; i < player_name_arr.length ; i++){
+            var user = WhoAmI(player_name_arr[i]);
+            var playerclass = drawclass(user);
+            var temp = player_name_arr[i].concat(" : ");
+            temp = temp.concat(playerclass);
+            temp = temp.concat("</br>");
+            str = str.concat(temp);
+        }
+        cls_e.innerHTML = str;
+    }
+    /*user enter play room event trigger*/
+    document.getElementById('AttendBtn').addEventListener('click', function (event) {
+        const id = document.getElementById('RoomId').textContent || ' ';
+        if (id == ' '){
+            alert("Please input room ID!");
+            return;
+        }
+        attend_room(id);
+        drawAllclass();
         // print roomNum
         drawRoomnum(player_name_arr[0]);
     });
@@ -288,32 +329,27 @@ function registerButtonHandlers() {
         current_id += 1;
         drawRoomnum(player_name_arr[0]);
     });
-    /*drawing player class */
-    function drawclass(user){
-        var playerclass = user.main_pool.map[user.username];
-        while(playerclass == undefined && user.main_pool.num > 0){
-            i = getRandomInt(user.main_pool.category.length)
-            if(user.main_pool.cg_remain_num[i] != 0){
-                user.main_pool.cg_remain_num[i] -= 1;
-                user.main_pool.num -= 1;
-                playerclass = user.main_pool.category[i];
-                user.main_pool.map[user.username] = playerclass;
-            }
-        }
-        return playerclass;
-    }
+    document.getElementById('NewRoom2').addEventListener('click', function (event) {
+        var user = WhoAmI(player_name_arr[0]);
+        var new_room = new Room(current_id,category2,cg_remain_num2);
+        room_arr[current_id] = new_room;
+        room = room_arr[current_id];
+        user.main_pool = room.pool;
+        user.set_host(current_id);
+        current_id += 1;
+        drawRoomnum(player_name_arr[0]);
+    });
+    /*reset game */
+    document.getElementById('ResetBtn').addEventListener('click', function (event){
+        var room_id = get_cur_room_id();
+        var room = room_arr[room_id];
+        room.reset(); 
+        drawAllclass();
+    });
+    /*drawing player class event trigger */
     document.getElementById('drawCard').addEventListener('click', function (event) {
-        cls_e = document.getElementById('UserClass');
-        str = "";
-        for(var i = 0; i < player_name_arr.length ; i++){
-            var user = WhoAmI(player_name_arr[i]);
-            var playerclass = drawclass(user);
-            var temp = player_name_arr[i].concat(" : ");
-            temp = temp.concat(playerclass);
-            temp = temp.concat("</br>");
-            str = str.concat(temp);
-        }
-        cls_e.innerHTML = str;
+        attend_room(get_cur_room_id());
+        drawAllclass();
     });
 
     /* Get */
@@ -385,6 +421,7 @@ function registerButtonHandlers() {
 function dis_bug_mes(){
     console.log("player array\n",player_arr);
     console.log("room array\n",room_arr);
+    console.log("player name array\n",player_name_arr)
     console.log("current",current_id);
 }
 window.setInterval(dis_bug_mes,5000);
