@@ -157,6 +157,7 @@ function registerButtonHandlers() {
             this.category = category;
             this.cg_remain_num = cg_remain_num;
             this.num = Pool.total_pool_num(cg_remain_num);
+            this.map = new Map();
         }
         static total_pool_num(cg_remain_num){
             var num = 0;
@@ -167,28 +168,22 @@ function registerButtonHandlers() {
         }
     }
     var category = ["wolfman","Villager","Prophet"];
-    var cg_remain_num = [3,1,1];
+    var cg_remain_num = [1,3,1];
     main_pool = new Pool(category,cg_remain_num);
-
     document.getElementById('drawCard').addEventListener('click', function (event) {
-        var playerclass = "";
         var userid = PROFILE.userId;
-        alert(main_pool.cg_remain_num);
-        while(playerclass == "" && main_pool.num >= 0){
+        var playerclass = main_pool.map[userid];
+        while(playerclass == undefined && main_pool.num >= 0){
             i = getRandomInt(main_pool.category.length)
             if(main_pool.cg_remain_num[i] != 0){
                 main_pool.cg_remain_num[i] -= 1;
                 main_pool.num -= 1;
                 playerclass = main_pool.category[i];
+                main_pool.map[userid] = playerclass;
             }
         }
-        alert(playerclass);
-        liff.sendMessages([
-            {
-              type: 'text',
-              text: playerclass,
-            },
-          ]);
+        cls_e = document.getElementById('UserClass');
+        cls_e.innerHTML = playerclass;
     });
 
     document.getElementById('shareMeme').addEventListener('click', function (event) {
