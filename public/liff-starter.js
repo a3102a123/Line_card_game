@@ -148,6 +148,7 @@ function displayLiffData() {
     liff.getProfile()
         .then((result) => {
             PROFILE = result;
+            loginInit();
             document.getElementById('profileName').textContent = 'Hi, ' + result.displayName;
         })
     document.getElementById('isInClient').textContent = liff.isInClient();
@@ -341,7 +342,7 @@ function dis_bug_mes(){
     console.log("room array\n",room_arr);
     console.log("current",current_id);
 }
-window.setInterval(dis_bug_mes,2000);
+window.setInterval(dis_bug_mes,5000);
 
 /**
 * Toggle specified element
