@@ -296,6 +296,30 @@ function registerButtonHandlers() {
         cls_e.innerHTML = playerclass;
     });
 
+    /*drawing room number */
+    function drawRoomnum(username){
+        var user = WhoAmI(username);
+        var roomNum = user.main_pool.map[user.room_id];
+        // while(roomNum == undefined && user.main_pool.num >= 0){
+        //     i = getRandomInt(user.main_pool.category.length)
+        //     if(user.main_pool.cg_remain_num[i] != 0){
+        //         user.main_pool.cg_remain_num[i] -= 1;
+        //         user.main_pool.num -= 1;
+        //         playerclass = user.main_pool.category[i];
+        //         user.main_pool.map[user.username] = playerclass;
+        //     }
+        // }
+        // return playerclass;
+        console.log(roomNum);
+        return roomNum;
+    }
+    document.getElementById('AttendBtn').addEventListener('click', function (event) {
+        var roomNum = drawRoomnum(PROFILE.userId);
+        cls_e = document.getElementById('UserRoomNum');
+        cls_e.innerHTML = roomNum;
+    });
+
+    /* Get */
     document.getElementById('shareMeme').addEventListener('click', function (event) {
         if (!liff.isLoggedIn()) alert('please login in LINE');
 
