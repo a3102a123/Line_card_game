@@ -242,6 +242,27 @@ function registerButtonHandlers() {
         player_arr[username] = user;
         player_name_arr.push(username);
     });
+
+    /*drawing room number */
+    function drawRoomnum(username){
+        var user = WhoAmI(username);
+        // console.log(is_room_exists());
+        // var roomNum = user.main_pool.map[user.room_id];
+
+        // while(roomNum == undefined && user.main_pool.num >= 0){
+        //     i = getRandomInt(user.main_pool.category.length)
+        //     if(user.main_pool.cg_remain_num[i] != 0){
+        //         user.main_pool.cg_remain_num[i] -= 1;
+        //         user.main_pool.num -= 1;
+        //         playerclass = user.main_pool.category[i];
+        //         user.main_pool.map[user.username] = playerclass;
+        //     }
+        // }
+        // return playerclass;
+        console.log(room_arr[user.room_id]);
+        return user.room_id;
+    };
+
     /*user enter play room */
     document.getElementById('AttendBtn').addEventListener('click', function (event) {
         const id = document.getElementById('RoomId').textContent || ' ';
@@ -262,6 +283,12 @@ function registerButtonHandlers() {
                 user.set_player(id);
             user.main_pool = room.pool;
         }
+        // print roomNum
+        var roomNum = drawRoomnum(player_name_arr[0]);
+        alert(roomNum);
+        cls_e = document.getElementById('UserRoomNum');
+        
+        cls_e.innerHTML = String(roomNum);
     });
     /*create new room */
     document.getElementById('NewRoom').addEventListener('click', function (event) {
@@ -294,29 +321,6 @@ function registerButtonHandlers() {
         }
         cls_e = document.getElementById('UserClass');
         cls_e.innerHTML = playerclass;
-    });
-
-    /*drawing room number */
-    function drawRoomnum(username){
-        var user = WhoAmI(username);
-        var roomNum = user.main_pool.map[user.room_id];
-        // while(roomNum == undefined && user.main_pool.num >= 0){
-        //     i = getRandomInt(user.main_pool.category.length)
-        //     if(user.main_pool.cg_remain_num[i] != 0){
-        //         user.main_pool.cg_remain_num[i] -= 1;
-        //         user.main_pool.num -= 1;
-        //         playerclass = user.main_pool.category[i];
-        //         user.main_pool.map[user.username] = playerclass;
-        //     }
-        // }
-        // return playerclass;
-        console.log(roomNum);
-        return roomNum;
-    }
-    document.getElementById('AttendBtn').addEventListener('click', function (event) {
-        var roomNum = drawRoomnum(PROFILE.userId);
-        cls_e = document.getElementById('UserRoomNum');
-        cls_e.innerHTML = roomNum;
     });
 
     /* Get */
