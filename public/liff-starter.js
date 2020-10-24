@@ -40,10 +40,11 @@ class Pool{
 }
 
 class Player{
-    constructor(){
+    constructor(userid){
         this.identity = undefined;
         this.room_id = undefined;
         this.main_pool = undefined;
+        this.userid = userid;
     }
     is_room_exists(){
         if(this.room_id == undefined)
@@ -51,11 +52,13 @@ class Player{
         else
             return true;
     }
-    set_host(){
+    set_host(room_id){
         this.identity = "host";
+        this.room_id = room_id;
     }
-    set_player(){
+    set_player(room_id){
         this.identity = "player";
+        this.room_id = room_id;
     }
 }
 /*global variable*/
@@ -64,7 +67,6 @@ var player_arr = new Map();
 var current_id = 0;
 var category = ["wolfman","Villager","Prophet"];
 var cg_remain_num = [1,3,1];
-var main_pool;
 
 window.onload = function () {
     const useNodeJS = true;   // if you are not using a node server, set this value to false
@@ -168,7 +170,7 @@ function displayIsInClientInfo() {
 
 function loginInit(){
     userid = PROFILE.userId;
-    user = new Player();
+    user = new Player(userid);
     player_arr[userid] = user;
 };
 
@@ -207,14 +209,20 @@ function registerButtonHandlers() {
             window.location.reload();
         }
     });
-
+    /*return random int */
     function getRandomInt(max) {
         return Math.floor(Math.random() * Math.floor(max));
     }
-
+    function WhoAmI(){
+        userid = PROFILE.userId;
+        user = player_arr[userid];
+        return user;
+    }
+    /*update room id context*/
     document.getElementById('RoomId').addEventListener('keyup', function (event) {	
         document.getElementById('RoomId').textContent = event.target.value;	
     });
+    /*user enter play room */
     document.getElementById('AttendBtn').addEventListener('click', function (event) {
         const id = document.getElementById('RoomId').textContent || ' ';
         if (id == ' '){
@@ -226,25 +234,43 @@ function registerButtonHandlers() {
             alert("The room doesn't exist!");
             return;
         }
-        main_pool = room.pool;
+        if(room.pool.num <= 0){
+            alert("The room is full!");
+            return;
+        }
+        user = WhoAmI();
+        if(user.room_id != undefined){
+            alert("You already have a play room!");
+            return;
+        }
+        user.set_player(id);
+        user.main_pool = room.pool;
     });
+    /*create new room */
     document.getElementById('NewRoom').addEventListener('click', function (event) {
+        var user = WhoAmI();
         var new_room = new Room(current_id,category,cg_remain_num);
+        if(user.room_id != undefined){
+            alert("You already have a play room!");
+            return;
+        }
         room_arr[current_id] = new_room;
         room = room_arr[current_id];
+        user.main_pool = room.pool;
+        user.set_host(current_id);
         current_id += 1;
-        main_pool = room.pool;
     });
+    /*drawing player class */
     document.getElementById('drawCard').addEventListener('click', function (event) {
-        var userid = PROFILE.userId;
-        var playerclass = main_pool.map[userid];
-        while(playerclass == undefined && main_pool.num >= 0){
-            i = getRandomInt(main_pool.category.length)
-            if(main_pool.cg_remain_num[i] != 0){
-                main_pool.cg_remain_num[i] -= 1;
-                main_pool.num -= 1;
-                playerclass = main_pool.category[i];
-                main_pool.map[userid] = playerclass;
+        var user = WhoAmI();
+        var playerclass = user.main_pool.map[user.userid];
+        while(playerclass == undefined && user.main_pool.num >= 0){
+            i = getRandomInt(user.main_pool.category.length)
+            if(user.main_pool.cg_remain_num[i] != 0){
+                user.main_pool.cg_remain_num[i] -= 1;
+                user.main_pool.num -= 1;
+                playerclass = user.main_pool.category[i];
+                user.main_pool.map[userid] = playerclass;
             }
         }
         cls_e = document.getElementById('UserClass');
