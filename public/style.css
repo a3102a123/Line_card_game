@@ -11,6 +11,15 @@
     width: 85%;
     margin-left: auto;
     margin-right: auto;
+    display: flex;
+}
+
+.leftBlock {
+    flex: 1;
+}
+
+.rightBlock {
+    flex: 1;
 }
 
 .meme {
