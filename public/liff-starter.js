@@ -36,7 +36,7 @@ function initializeLiffOrDie(myLiffId) {
     if (myLiffId) {
         initializeLiff(myLiffId);
     } else {
-        console.error('please set your liff Id in application!')
+        console.error('please set your liff Id in application!');
     }
 }
 
@@ -54,7 +54,7 @@ function initializeLiff(myLiffId) {
             initializeApp();
         })
         .catch((err) => {
-            console.log(err)
+            console.log(err);
         });
 }
 
@@ -136,20 +136,29 @@ function registerButtonHandlers() {
         }
     });
 
-    document.getElementById('previewImage').addEventListener('click', function () {
-        document.getElementById('memeImage').src = document.getElementById('inputImageUrl').value;
-    });
-
-    document.getElementById('topText').addEventListener('keyup', function (event) {
-        document.getElementById('memeTopCaption').textContent = event.target.value;
-    });
-
-    document.getElementById('bottomText').addEventListener('keyup', function (event) {
-        document.getElementById('memeBottomCaption').textContent = event.target.value;
-    });
-
     function getRandomInt(max) {
         return Math.floor(Math.random() * Math.floor(max));
+    }
+
+    class room{
+        constructor(id,category,cg_remain_num){
+            this.pool = new Pool(category,cg_remain_num);
+            this.id = id;
+            this.category = category;
+            this.cg_remain_num = cg_remain_num;
+        }
+        reset(){
+            this.pool = new Pool(category,cg_remain_num);
+        }
+        cg_insert(new_cg,new_re_num){
+            this.category.push(new_cg);
+            this.cg_remain_num.push(new_re_num);
+        }
+        cg_replace(category,cg_remain_num){
+            this.category = category;
+            this.cg_remain_num = cg_remain_num;
+            this.reset();
+        }
     }
     
     class Pool{
@@ -167,6 +176,7 @@ function registerButtonHandlers() {
             return num;
         }
     }
+    var room_arr = new Map();
     var category = ["wolfman","Villager","Prophet"];
     var cg_remain_num = [1,3,1];
     main_pool = new Pool(category,cg_remain_num);
@@ -189,10 +199,6 @@ function registerButtonHandlers() {
     document.getElementById('shareMeme').addEventListener('click', function (event) {
         if (!liff.isLoggedIn()) alert('please login in LINE');
 
-        const imageUrl = document.getElementById('memeImage').src;
-        const topText = document.getElementById('memeTopCaption').textContent || ' ';
-        const bottomText = document.getElementById('memeBottomCaption').textContent || ' ';
-        const url = window.location.href;
         liff.shareTargetPicker([{
             'type': 'flex',
             'altText': topText + ' ' + bottomText,
