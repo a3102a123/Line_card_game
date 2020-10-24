@@ -272,6 +272,7 @@ function registerButtonHandlers() {
         cls_e.innerHTML = playerclass;
     });
 
+    /* Get */
     document.getElementById('shareMeme').addEventListener('click', function (event) {
         if (!liff.isLoggedIn()) alert('please login in LINE');
 
