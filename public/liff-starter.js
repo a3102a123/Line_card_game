@@ -442,49 +442,42 @@ function registerButtonHandlers() {
         printCustomCategory();
     });
 
+    // function drawRoomnum(username){
+    //     var user = WhoAmI(username);
+    //     var roomNum = String(user.room_id);
+    //     var room = room_arr[user.room_id];
+    //     return room.game_name;
+    //     temp = "Room ID : ";
+    //     roomNum = temp.concat(roomNum);
+    //     roomNum = roomNum.concat(" ",room.game_name);
+    //     cls_e = document.getElementById('UserRoomNum');
+    //     cls_e.innerHTML = roomNum;
+    //     return;
+    // };
+
     /* Get */
     document.getElementById('shareMeme').addEventListener('click', function (event) {
         if (!liff.isLoggedIn()) alert('please login in LINE');
-
-        // const imageUrl = document.getElementById('memeImage').src;
-        // const topText = document.getElementById('memeTopCaption').textContent || ' ';
-        // const bottomText = document.getElementById('memeBottomCaption').textContent || ' ';
-        const url = window.location.href;
-        liff.shareTargetPicker([{
-            'type': 'flex',
-            'altText': " ",
-            'contents': {
-              "type": "bubble",
-              "hero": {
-                "type": "image",
-                "url": "https://cdn1-manfashion.techbang.com/system/excerpt_images/8442/mobile_inpage/04934a6594a13f437a01f8cb88f37d75.jpg?1562911218",
-                "size": "full",
-                "aspectRatio": "20:13",
-                "aspectMode": "cover",
-                "action": {
-                  "type": "uri",
-                  "uri": "http://linecorp.com/"
-                }
-              },
-              "body": {
-                "type": "box",
-                "layout": "vertical",
-                "contents": [
-                  {
-                    "type": "text",
-                    "text": "狼人殺",
-                    "weight": "bold",
-                    "size": "xl"
-                  },
-                  {
-                    "type": "text",
-                    "text": "刺激度",
-                    "margin": "md"
-                  },
-                  {
-                    "type": "box",
-                    "layout": "baseline",
-                    "contents": [
+        // console.log(location.href);
+        var user = WhoAmI(username);
+        var imgUrl = 
+        ["https://cdn1-manfashion.techbang.com/system/excerpt_images/8442/mobile_inpage/04934a6594a13f437a01f8cb88f37d75.jpg?1562911218",
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRh0hwGY7AkYbMExfJnN0WotTwjFBoh0LGE_Q&usqp=CAU", 
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSbMvSfMm0XR2d8QClEqq4pMpxgWQi2_3rrcw&usqp=CAU"];
+        // JSON parameters
+        var imageUrl = "";
+        var gameName = "";
+        var playerCharacter = "";
+        var gameTime = "";
+        var gameRate = "";
+        var tiffUrl = "";
+        playerCharacter = user.main_pool.map[user.username];
+        tiffUrl = location.href;
+        if (room_arr[user.room_id].game_name == "Werewolf") {
+          imageUrl = imgUrl[0];
+          gameName = "狼人殺";
+          gameTime = "45分鐘";
+          gameRate = [
                       {
                         "type": "icon",
                         "size": "sm",
@@ -518,7 +511,125 @@ function registerButtonHandlers() {
                         "margin": "md",
                         "flex": 0
                       }
-                    ]
+                    ];
+        } else if (room_arr[user.room_id].game_name == "Avalon"){
+          imageUrl = imgUrl[1];
+          gameName = "阿瓦隆";
+          gameTime = "90分鐘";
+          gameRate = [
+                      {
+                        "type": "icon",
+                        "size": "sm",
+                        "url": "https://scdn.line-apps.com/n/channel_devcenter/img/fx/review_gold_star_28.png"
+                      },
+                      {
+                        "type": "icon",
+                        "size": "sm",
+                        "url": "https://scdn.line-apps.com/n/channel_devcenter/img/fx/review_gold_star_28.png"
+                      },
+                      {
+                        "type": "icon",
+                        "size": "sm",
+                        "url": "https://scdn.line-apps.com/n/channel_devcenter/img/fx/review_gold_star_28.png"
+                      },
+                      {
+                        "type": "icon",
+                        "size": "sm",
+                        "url": "https://scdn.line-apps.com/n/channel_devcenter/img/fx/review_gray_star_28.png"
+                      },
+                      {
+                        "type": "icon",
+                        "size": "sm",
+                        "url": "https://scdn.line-apps.com/n/channel_devcenter/img/fx/review_gray_star_28.png"
+                      },
+                      {
+                        "type": "text",
+                        "text": "3.0",
+                        "size": "sm",
+                        "color": "#999999",
+                        "margin": "md",
+                        "flex": 0
+                      }
+                    ];
+        } else {
+          imageUrl = imgUrl[2];
+          gameName = "客制化遊戲";
+          gameTime = "？？？分鐘";
+          gameRate = [
+                      {
+                        "type": "icon",
+                        "size": "sm",
+                        "url": "https://scdn.line-apps.com/n/channel_devcenter/img/fx/review_gray_star_28.png"
+                      },
+                      {
+                        "type": "icon",
+                        "size": "sm",
+                        "url": "https://scdn.line-apps.com/n/channel_devcenter/img/fx/review_gray_star_28.png"
+                      },
+                      {
+                        "type": "icon",
+                        "size": "sm",
+                        "url": "https://scdn.line-apps.com/n/channel_devcenter/img/fx/review_gray_star_28.png"
+                      },
+                      {
+                        "type": "icon",
+                        "size": "sm",
+                        "url": "https://scdn.line-apps.com/n/channel_devcenter/img/fx/review_gray_star_28.png"
+                      },
+                      {
+                        "type": "icon",
+                        "size": "sm",
+                        "url": "https://scdn.line-apps.com/n/channel_devcenter/img/fx/review_gray_star_28.png"
+                      },
+                      {
+                        "type": "text",
+                        "text": "???",
+                        "size": "sm",
+                        "color": "#999999",
+                        "margin": "md",
+                        "flex": 0
+                      }
+                    ];
+        }
+        // const imageUrl = document.getElementById('memeImage').src;
+        // const topText = document.getElementById('memeTopCaption').textContent || ' ';
+        // const bottomText = document.getElementById('memeBottomCaption').textContent || ' ';
+        const url = window.location.href;
+        liff.shareTargetPicker([{
+            'type': 'flex',
+            'altText': " ",
+            'contents': {
+              "type": "bubble",
+              "hero": {
+                "type": "image",
+                "url": imageUrl,
+                "size": "full",
+                "aspectRatio": "20:13",
+                "aspectMode": "cover",
+                "action": {
+                  "type": "uri",
+                  "uri": tiffUrl
+                }
+              },
+              "body": {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                  {
+                    "type": "text",
+                    "text": gameName,
+                    "weight": "bold",
+                    "size": "xl"
+                  },
+                  {
+                    "type": "text",
+                    "text": "刺激度",
+                    "margin": "md"
+                  },
+                  {
+                    "type": "box",
+                    "layout": "baseline",
+                    "contents": gameRate
                   },
                   {
                     "type": "box",
@@ -540,7 +651,7 @@ function registerButtonHandlers() {
                           },
                           {
                             "type": "text",
-                            "text": "45分鐘",
+                            "text": gameTime,
                             "wrap": true,
                             "color": "#666666",
                             "size": "sm",
@@ -562,7 +673,7 @@ function registerButtonHandlers() {
                           },
                           {
                             "type": "text",
-                            "text": "狼人",
+                            "text": playerCharacter,
                             "wrap": true,
                             "color": "#666666",
                             "size": "sm",
@@ -586,7 +697,7 @@ function registerButtonHandlers() {
                     "action": {
                       "type": "uri",
                       "label": "GAME END",
-                      "uri": "https://linecorp.com"
+                      "uri": tiffUrl
                     }
                   },
                   {
