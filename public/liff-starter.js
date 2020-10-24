@@ -228,13 +228,6 @@ function registerButtonHandlers() {
             alert("Please input room ID!");
             return;
         }
-        static total_pool_num(cg_remain_num){
-            var num = 0;
-            for(var i = 0 ; i < cg_remain_num.length ; i++){
-                num += cg_remain_num[i];
-            }
-            return num;
-        }
         if(room.pool.num <= 0){
             alert("The room is full!");
             return;
