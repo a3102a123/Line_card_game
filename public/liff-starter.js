@@ -276,7 +276,7 @@ function registerButtonHandlers() {
     /*drawing player class */
     function drawclass(user){
         var playerclass = user.main_pool.map[user.username];
-        while(playerclass == undefined && user.main_pool.num >= 0){
+        while(playerclass == undefined && user.main_pool.num > 0){
             i = getRandomInt(user.main_pool.category.length)
             if(user.main_pool.cg_remain_num[i] != 0){
                 user.main_pool.cg_remain_num[i] -= 1;
@@ -288,12 +288,17 @@ function registerButtonHandlers() {
         return playerclass;
     }
     document.getElementById('drawCard').addEventListener('click', function (event) {
+        cls_e = document.getElementById('UserClass');
+        str = "";
         for(var i = 0; i < player_name_arr.length ; i++){
             var user = WhoAmI(player_name_arr[i]);
             var playerclass = drawclass(user);
+            var temp = player_name_arr[i].concat(" : ");
+            temp = temp.concat(playerclass);
+            temp = temp.concat("</br>");
+            str = str.concat(temp);
         }
-        cls_e = document.getElementById('UserClass');
-        cls_e.innerHTML = playerclass;
+        cls_e.innerHTML = str;
     });
 
     /*drawing room number */
