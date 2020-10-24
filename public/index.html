@@ -30,7 +30,7 @@
                             <img id="placeImage"
                                 src="./images/meme/playTogether.png">
                             <div class="card-body">
-                                <h5 id="campaignName" class="card-title">LIFF Workshop </h5>
+                                <!-- <h5 id="campaignName" class="card-title">LIFF Workshop </h5>
                                 <form>
                                     <div class="form-group row">
                                         <label for="campaignPlace" class="col-3 col-form-label">地點</label>
@@ -44,22 +44,61 @@
                                             <p class="form-control-plaintext" id="campaignTime">11:00 ~ 16:00</p>
                                         </div>
                                     </div>
+                                </form> -->
+                                <form role="form" class="loginBlock">
+                                    <button id="liffLoginButton" class="btn btn-success">LINE Login</button>
+                                    <button id="liffLogoutButton" class="btn">LINE Logout</button>
                                 </form>
+
+                                <div class="tool">
+                                    <h3>Your Class : <p id="UserClass"></p></h3>
+                                    <form role="form">
+                                        <div class="form-group">
+                                            <label>Room ID</label>
+                                            <input id="RoomId" type="text" class="form-control">
+                                            <div class="input-group-append">
+                                                <button id="AttendBtn" class="btn btn-outline-secondary" type="button">Attend</button>
+                                            </div>
+                                        </div>
+                                        <button type="button" id="NewRoom" class="btn btn-primary">New</button>
+                                        <button type="button" id="drawCard" class="btn btn-primary">Draw</button>
+                                        <button type="button" id="shareMeme" class="btn btn-primary">Share</button>
+                                    </form>
+                                </div>
+                                
                             </div>
                         </div>
 
                     </div>
+                    
                 </div>
-                <div class="col-sm">
+                <!-- <div class="col-sm">
                     <button id="liffLoginButton" class="btn btn-success">LINE Login</button>
                     <button id="liffLogoutButton" class="btn">LINE Logout</button>
                     <div class="mt-3">
                         <button id="shareMeTargetPicker" class="btn btn-primary">Share me!</button>
                     </div>
-                </div>
+                </div> -->
+            </div>
+            
+            <div class="tool">
+                <h3>Your Class : <p id="UserClass"></p>
+                </h3>
+                <form role="form">
+                    <div class="form-group">
+                        <label>Room ID</label>
+                        <input id="RoomId" type="text" class="form-control">
+                        <div class="input-group-append">
+                            <button id="AttendBtn" class="btn btn-outline-secondary" type="button">Attend</button>
+                        </div>
+                    </div>
+                    <button type="button" id="NewRoom" class="btn btn-primary">New</button>
+                    <button type="button" id="drawCard" class="btn btn-primary">Draw</button>
+                    <button type="button" id="shareMeme" class="btn btn-primary">Share</button>
+                </form>
             </div>
         </div>
-        <div class="container">
+        <!-- <div class="container">
             <div class="row">
                 <div class="col-sm">
                 </div>
@@ -81,7 +120,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
         <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
         <script src="liff-starter.js"></script>
     </body>
