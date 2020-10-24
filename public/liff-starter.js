@@ -285,18 +285,20 @@ function registerButtonHandlers() {
     };
     /*user enter play room */
     function attend_room(id){
+        var room = room_arr[id];
+        var totalnum = 0;
+        if (room == undefined){
+            alert("Please Add the Room !");
+            return;
+        }
+        for(var j = 0; j < room.cg_remain_num.length; j++){
+            var num = parseInt(room.cg_remain_num[j]);
+            totalnum += num;
+        }
         for(var i = 0; i < player_name_arr.length ; i++){
             var user = WhoAmI(player_name_arr[i]);
-            room = room_arr[id];
-            console.log(room);
-            if (room == undefined){
-                alert("Please Add the Room !");
+            if(i >= totalnum)
                 return;
-            }
-            if(room.pool.num <= 0 && user.identity != "host"){
-                alert("The room is full!");
-                return;
-            }
             if(i == 0)
                 user.set_host(id);
             else
@@ -320,10 +322,13 @@ function registerButtonHandlers() {
     }
     /*drawing all player class and print*/
     function drawAllclass(){
-        cls_e = document.getElementById('UserClass');
-        str = "";
+        var cls_e = document.getElementById('UserClass');
+        var str = "";
+        var roomid = get_cur_room_id();
         for(var i = 0; i < player_name_arr.length ; i++){
             var user = WhoAmI(player_name_arr[i]);
+            if (user.room_id != roomid)
+                continue;
             var playerclass = drawclass(user);
             var temp = player_name_arr[i].concat(" : ");
             temp = temp.concat(playerclass);
