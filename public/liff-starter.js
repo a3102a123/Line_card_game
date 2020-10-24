@@ -1,71 +1,6 @@
 // DO NOT CHANGE THIS
 let PROFILE = null;
 
-/*Class definition*/
-class Room{
-    constructor(id,category,cg_remain_num){
-        this.pool = new Pool(category,cg_remain_num);
-        this.id = id;
-        this.category = category;
-        this.cg_remain_num = cg_remain_num;
-    }
-    reset(){
-        this.pool = new Pool(category,cg_remain_num);
-    }
-    cg_insert(new_cg,new_re_num){
-        this.category.push(new_cg);
-        this.cg_remain_num.push(new_re_num);
-    }
-    cg_replace(category,cg_remain_num){
-        this.category = category;
-        this.cg_remain_num = cg_remain_num;
-        this.reset();
-    }
-}
-
-class Pool{
-    constructor(category, cg_remain_num){
-        this.category = category;
-        this.cg_remain_num = cg_remain_num;
-        this.num = Pool.total_pool_num(cg_remain_num);
-        this.map = new Map();
-    }
-    static total_pool_num(cg_remain_num){
-        var num = 0;
-        for(var i = 0 ; i < cg_remain_num.length ; i++){
-            num += cg_remain_num[i];
-        }
-        return num;
-    }
-}
-
-class Player{
-    constructor(){
-        this.identity = undefined;
-        this.room_id = undefined;
-        this.main_pool = undefined;
-    }
-    is_room_exists(){
-        if(this.room_id == undefined)
-            return false;
-        else
-            return true;
-    }
-    set_host(){
-        this.identity = "host";
-    }
-    set_player(){
-        this.identity = "player";
-    }
-}
-/*global variable*/
-var room_arr = new Map();
-var player_arr = new Map();
-var current_id = 0;
-var category = ["wolfman","Villager","Prophet"];
-var cg_remain_num = [1,3,1];
-var main_pool;
-
 window.onload = function () {
     const useNodeJS = true;   // if you are not using a node server, set this value to false
     const defaultLiffId = "";   // change the default LIFF value if you are not using a node server
@@ -101,7 +36,7 @@ function initializeLiffOrDie(myLiffId) {
     if (myLiffId) {
         initializeLiff(myLiffId);
     } else {
-        console.error('please set your liff Id in application!');
+        console.error('please set your liff Id in application!')
     }
 }
 
@@ -119,7 +54,7 @@ function initializeLiff(myLiffId) {
             initializeApp();
         })
         .catch((err) => {
-            console.log(err);
+            console.log(err)
         });
 }
 
@@ -147,7 +82,6 @@ function displayLiffData() {
         .then((result) => {
             PROFILE = result;
             document.getElementById('profileName').textContent = 'Hi, ' + result.displayName;
-            loginInit();
         })
     document.getElementById('isInClient').textContent = liff.isInClient();
     document.getElementById('isLoggedIn').textContent = liff.isLoggedIn();
@@ -165,12 +99,6 @@ function displayIsInClientInfo() {
         document.getElementById('shareMeTargetPicker').classList.toggle('hidden');
     }
 }
-
-function loginInit(){
-    userid = PROFILE.userId;
-    user = new Player();
-    player_arr[userid] = user;
-};
 
 /**
 * Register event handlers for the buttons displayed in the app
@@ -208,33 +136,40 @@ function registerButtonHandlers() {
         }
     });
 
+    // document.getElementById('previewImage').addEventListener('click', function () {
+    //     document.getElementById('memeImage').src = document.getElementById('inputImageUrl').value;
+    // });
+
+    // document.getElementById('topText').addEventListener('keyup', function (event) {
+    //     document.getElementById('memeTopCaption').textContent = event.target.value;
+    // });
+
+    // document.getElementById('bottomText').addEventListener('keyup', function (event) {
+    //     document.getElementById('memeBottomCaption').textContent = event.target.value;
+    // });
+
     function getRandomInt(max) {
         return Math.floor(Math.random() * Math.floor(max));
     }
-
-    document.getElementById('RoomId').addEventListener('keyup', function (event) {	
-        document.getElementById('RoomId').textContent = event.target.value;	
-    });
-    document.getElementById('AttendBtn').addEventListener('click', function (event) {
-        const id = document.getElementById('RoomId').textContent || ' ';
-        if (id == ' '){
-            alert("Please input room ID!");
-            return;
+    
+    class Pool{
+        constructor(category, cg_remain_num){
+            this.category = category;
+            this.cg_remain_num = cg_remain_num;
+            this.num = Pool.total_pool_num(cg_remain_num);
+            this.map = new Map();
         }
-        var room = room_arr[id];
-        if (room == undefined){
-            alert("The room doesn't exist!");
-            return;
+        static total_pool_num(cg_remain_num){
+            var num = 0;
+            for(var i = 0 ; i < cg_remain_num.length ; i++){
+                num += cg_remain_num[i];
+            }
+            return num;
         }
-        main_pool = room.pool;
-    });
-    document.getElementById('NewRoom').addEventListener('click', function (event) {
-        var new_room = new Room(current_id,category,cg_remain_num);
-        room_arr[current_id] = new_room;
-        room = room_arr[current_id];
-        current_id += 1;
-        main_pool = room.pool;
-    });
+    }
+    var category = ["wolfman","Villager","Prophet"];
+    var cg_remain_num = [1,3,1];
+    main_pool = new Pool(category,cg_remain_num);
     document.getElementById('drawCard').addEventListener('click', function (event) {
         var userid = PROFILE.userId;
         var playerclass = main_pool.map[userid];
@@ -254,6 +189,10 @@ function registerButtonHandlers() {
     document.getElementById('shareMeme').addEventListener('click', function (event) {
         if (!liff.isLoggedIn()) alert('please login in LINE');
 
+        const imageUrl = document.getElementById('memeImage').src;
+        const topText = document.getElementById('memeTopCaption').textContent || ' ';
+        const bottomText = document.getElementById('memeBottomCaption').textContent || ' ';
+        const url = window.location.href;
         liff.shareTargetPicker([{
             'type': 'flex',
             'altText': topText + ' ' + bottomText,
