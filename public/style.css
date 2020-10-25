@@ -73,6 +73,19 @@
     margin-bottom: 10px;
 }
 
+.logoName {
+    font-size: 7em;
+    font-family: 'Times New Roman', Times, serif;
+    color: tomato;
+    text-align: center;
+    margin-top: 40px;
+    font-style: italic;
+}
+
+.form-control {
+    margin-bottom: 10px;
+}
+/* --- */
 .meme {
     position: relative;
     width: 300px;
