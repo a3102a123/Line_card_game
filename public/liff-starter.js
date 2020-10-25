@@ -676,7 +676,7 @@ function registerButtonHandlers() {
                             "type": "text",
                             "text": playerCharacter,
                             "wrap": true,
-                            "color": "#666666",
+                            "color": "#EF5350",
                             "size": "sm",
                             "flex": 1
                           }
