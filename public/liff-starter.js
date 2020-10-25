@@ -278,6 +278,7 @@ function registerButtonHandlers() {
         var room = room_arr[user.room_id];
         temp = "Room ID : ";
         roomNum = temp.concat(roomNum);
+        roomNum = roomNum.concat("<br/>","Game Name :");
         roomNum = roomNum.concat(" ",room.game_name);
         cls_e = document.getElementById('UserRoomNum');
         cls_e.innerHTML = roomNum;
